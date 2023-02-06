@@ -8,7 +8,7 @@
 
 - *Eduardo "Swagger" Carvalho*
 
-- *Feral Interactive* - for their assistance in making the Blender Addon
+- *Feral Interactive* - for their assistance in making the LOD Generator Blender Addon
 
   
 
@@ -37,6 +37,37 @@ To install this addon, download the zip in **releases** and follow Blender's doc
 	4. Press Generate Lods
 	5. The new LODs should have been created in the output folder
 
+
+# Convert R2 Normals to RR
+
+
+ABOUT
+---------------
+
+> This tool converts Rome 2's normal map format into a 3D readable format. Rome 2's normal maps have RG/RGA color information channels while Blender and Rome Remaster expect RGB/RG channels. It also generates the blue channel based on RG using the following formula: blue[i][k] = round(math.sqrt(abs(1- (red[i][k]**2 + green[i][k]**2))),1)
+
+Usage
+---------------
+
+Run the script inside a folder with uncompressed Rome 2 normals.
+
+
+# Quick Battle Generator
+
+
+ABOUT
+---------------
+
+> This tool uses information from map_ground_types.tga to generate quick_battle_locations.txt. It can ignore ground types (like high_mountains) and will generate an image where white dots represent the picked location coordinates
+
+![Installation](images/quick_battle_locations.png)
+
+Usage
+---------------
+
+Run the script inside a \data\world\maps\base.
+
+
 MANTAINERS
 ---------------
 
@@ -45,3 +76,4 @@ This program is maintained by:
 ```markdown
 | Eduardo Carvalho | fc55881@alunos.fc.ul.pt | Master's in Informatics | FCUL |
 ```
+
