@@ -34,7 +34,7 @@ To install this addon, download the zip in **releases** and follow Blender's doc
 	1. To use the addon, after enabling, a small panel called "Mod - Rome Remastered" will appear in the viewport sidebar.
 	2. Choose an input & output folder
 	3. Choose a decimation level
-	4. Press *Generate Lods*
+	4. Press Generate Lods
 	5. The new LODs should have been created in the output folder
 
 MANTAINERS
