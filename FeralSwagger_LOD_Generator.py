@@ -5,7 +5,7 @@ bl_info = {
     "name": "LOD Generator",
     "description": "Blender addon wrapper of Swagger's LOD Generator.",
     "author": "Swagger, Lorenzo-Feral",
-    "version": (2, 0, 0),
+    "version": (1, 0, 2),
     "blender": (4, 0, 0),
     "category": "3D View"
 }
@@ -170,38 +170,31 @@ def generate_lods(context, input_dir, output_dir, decimate_ratio):
                 file_name = os.path.basename(file)
                 LOD_level = context.scene.lod_level
                 print("FILENAME: ", file_name)
-
-                # Import Collada file
                 bpy.ops.wm.collada_import(filepath=file)
-                obj = bpy.context.selected_objects[-1]
-
-                # Rename UV maps
                 rename_uv_maps(context=context, file_name=file_name)
-
-                # Join child objects
                 join_child_objects(context=context)
-
-                # Apply decimation
                 if decimate_ratio != 1.0:
                     add_decimate_modifier(
                         context=context, decimate_ratio=decimate_ratio)
                     apply_decimate_modifier(context=context)
-
-                # Remove doubles and delete loose vertices
-                bpy.context.view_layer.objects.active = obj
-                bpy.ops.object.mode_set(mode='EDIT')
-                bpy.ops.mesh.select_all(action='SELECT')
-                bpy.ops.mesh.remove_doubles(
-                    threshold=0.000001, use_unselected=True)
-                bpy.ops.mesh.delete_loose()
-                bpy.ops.object.mode_set(mode='OBJECT')
-
-                # Export Collada file
+                    bpy.ops.object.mode_set(mode='OBJECT')
+                    bpy.context.active_object.data.vertices.foreach_set(
+                        'select', [False] * len(bpy.context.active_object.data.vertices))
+                    bpy.context.active_object.data.edges.foreach_set(
+                        'select', [False] * len(bpy.context.active_object.data.edges))
+                    bpy.context.active_object.data.polygons.foreach_set(
+                        'select', [False] * len(bpy.context.active_object.data.polygons))
+                    bpy.ops.object.mode_set(mode='EDIT')
+                    bpy.ops.mesh.select_all(action='SELECT')
+                    bpy.ops.mesh.remove_doubles(
+                        threshold=0.000001, use_unselected=True)
+                    bpy.ops.mesh.delete_loose()
+                    bpy.ops.object.mode_set(mode='OBJECT')
                 file_name = file_name.replace("_lod0", "")
                 output_file_name = f"{file_name[:-4]}_{LOD_level}.dae"
+                limitBoneWeighting(context)
                 bpy.ops.wm.collada_export(
                     filepath=os.path.join(output_dir, output_file_name))
-
                 purge_objects()
     except OSError as e:
         print(f"Error accessing file: {e}")
